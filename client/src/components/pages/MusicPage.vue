@@ -157,7 +157,7 @@ END:VCALENDAR`;
   const url = URL.createObjectURL(blob);
 
   // For iOS, we use a workaround to open the ICS file in a new tab
-  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
   if (isIOS) {
     // Open the ICS file in a new tab
     const newWindow = window.open();
