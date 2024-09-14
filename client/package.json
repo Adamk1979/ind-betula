@@ -1,0 +1,24 @@
+{
+  "name": "client",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "dayjs": "^1.11.12",
+    "dotenv": "^16.4.5",
+    "vue": "^3.4.31",
+    "vue-responsive-video-background-player": "^2.3.1",
+    "vue-scroll-snap": "^0.1.11"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.5",
+    "typescript": "^5.2.2",
+    "vite": "^5.3.4",
+    "vue-tsc": "^2.0.24"
+  }
+}
