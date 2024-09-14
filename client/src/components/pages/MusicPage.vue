@@ -232,7 +232,6 @@ END:VCALENDAR`;
   width: 100%; /* Ensure it takes up the full width */
   border-bottom: 2px solid #ffffff; /* Border across the full content width */
   padding-bottom: 5px; /* Add padding to push content up */
-  margin-left: -10px;
 
 }
 
