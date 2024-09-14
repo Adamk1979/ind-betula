@@ -152,13 +152,24 @@ LOCATION:${event.location || ''}
 END:VEVENT
 END:VCALENDAR`;
 
-  // Create a blob with the ics content and download it
+  // Convert the ics content to a Blob
   const blob = new Blob([icsContent], { type: 'text/calendar' });
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `${event.name}.ics`;
-  a.click();
+
+  // For iOS, we use a workaround to open the ICS file in a new tab
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  if (isIOS) {
+    // Open the ICS file in a new tab
+    const newWindow = window.open();
+    newWindow?.document.write(`<iframe src="${url}" frameborder="0" style="width:100%; height:100%;" allowfullscreen></iframe>`);
+  } else {
+    // Standard download for other platforms
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${event.name}.ics`;
+    a.click();
+  }
+
   URL.revokeObjectURL(url);
 }
 </script>
@@ -210,7 +221,6 @@ END:VCALENDAR`;
   flex-direction: column; /* Ensure that events stack vertically */
   justify-content: flex-start; /* Align items to the top */
   border: 2px solid rgba(255, 204, 0, 0.2);   /* Yellow border for the entire card */
-
 }
 
 /* Each event card */
@@ -232,7 +242,6 @@ END:VCALENDAR`;
   width: 100%; /* Ensure it takes up the full width */
   border-bottom: 2px solid #ffffff; /* Border across the full content width */
   padding-bottom: 5px; /* Add padding to push content up */
-
 }
 
 .event-date {
