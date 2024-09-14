@@ -64,7 +64,6 @@
 <script setup lang="ts">
 import { onMounted, ref, inject } from 'vue';
 import Navbar from "../Navbar.vue";
-import NavBarPage from "./NavBarPage.vue";
 import dayjs from 'dayjs';
 
 interface Event {
