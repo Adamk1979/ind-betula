@@ -48,9 +48,11 @@
   font-size: 80px;
   line-height: 100px;
   color: #f7f7f7;
-  -webkit-text-stroke: 1px #000205;
+  -webkit-text-stroke: 5px #000205;
   text-align: left; /* Placera texten till vänster */
   margin-right: 130px; /* Justera marginalen för att flytta texten in från vänster */
+  paint-order: stroke fill;
+  -webkit-text-stroke-color: #000205;
 }
 
 
@@ -63,8 +65,10 @@
   font-size: 80px; /* Ensures Betula remains prominent */
   line-height: 100px;
   color: #f7f7f7;
-  -webkit-text-stroke: 1px #000205;
+  -webkit-text-stroke: 4px #000205;
   margin-right: 40px; /* Justera marginalen för att flytta texten in från vänster */
+  paint-order: stroke fill;
+  -webkit-text-stroke-color: #000205;
 }
 
 .gallery-and-biography {
@@ -75,8 +79,10 @@
   font-size: 20px; /* Slightly smaller for balanced spacing */
   line-height: 0px; /* Removes additional line height */
   color: #f7f7f7;
-  -webkit-text-stroke: 1px #000205;
+  -webkit-text-stroke: 2.5px #000205;
   margin-right: 80px; /* Justera marginalen för att flytta texten in från vänster */
+  paint-order: stroke fill;
+  -webkit-text-stroke-color: #000205;
 }
 
 .arrow-section {
@@ -95,6 +101,8 @@
   left: 0;
   right: 0;
   margin: 0 auto; /* Center horizontally */
+  paint-order: stroke fill;
+  -webkit-text-stroke-color: #000205;
 }
 
 .discover-our-music {
@@ -105,18 +113,53 @@
   line-height: 24px;
   color: #ffffff;
   margin-top: -120px; /* Position text closer to the arrow */
+  -webkit-text-stroke: 2.5px #000205;
+  paint-order: stroke fill;
+  -webkit-text-stroke-color: #000205;
 }
 
 /* Media queries */
 
-
-@media (min-width: 768px) { /* For tablets and larger */
+@media (min-width: 360px) { /*for da android mandem (samsung) */
   .Our {
-    font-size: 150px;
+    font-size: 80px;
+    margin-bottom: -35px;
+  }
+
+  .journey {
+    font-size: 70px;
+    margin-bottom: -20px;
   }
 
   .gallery-and-biography {
-    font-size: 40px;
+    font-size: 19px;
+  }
+
+  .arrow-curved {
+    width: 56px;
+    height: 56px;
+  }
+
+  .discover-our-music {  /* This is have-a-look */
+    font-size: 20px;
+    margin-top: -90px; /* Adjust margin for larger screens */
+  }
+}
+
+
+@media (min-width: 768px) { /* For tablets and larger */
+  .Our {
+    font-size: 120px;
+    margin-bottom: -10px;
+  }
+
+  .journey {
+    font-size: 90px;
+    margin-bottom: -10px;
+  }
+
+  .gallery-and-biography {
+    font-size: 25px;
   }
 
   .arrow-curved {
@@ -126,31 +169,36 @@
 
   .discover-our-music {
     font-size: 20px;
-    margin-top: -150px; /* Adjust margin for larger screens */
+    margin-top: -120px; /* Adjust margin for larger screens */
   }
 }
 
 @media (min-width: 1024px) { /* For desktops and larger */
   .Our {
-    font-size: 200px;
+    font-size: 120px;
+    
+  }
+
+  .journey {
+    font-size: 100px;
+    margin-bottom: -10px;
   }
 
   .gallery-and-biography {
-    font-size: 50px;
+    font-size: 27px;
   }
 
   .arrow-curved {
     width: 150px;
     height: 150px;
+
   }
 
   .discover-our-music {
     font-size: 24px;
     margin-top: -180px; /* Adjust margin for larger screens */
   }
-
-
-
   
 }
+
 </style>

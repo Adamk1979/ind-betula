@@ -1,9 +1,10 @@
 <template>
+  <div id="viewport-size"></div>
+
   <div>
     <nav class="navbar" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <img src="/navlogo.svg" class="navbar-logo" alt="nav-logo" />
-        <!-- Apply class based on `isActive` to rotate/transform the icon -->
         <img 
           :class="{'nav-icon--open': isActive}" 
           src="/nav.svg" 
@@ -17,7 +18,6 @@
     <transition name="fade">
       <div v-if="isActive" id="fullPageMenu" class="full-page-menu">
         <div class="menu-content">
-          <!-- Menu Items -->
           <a href="#" class="menu-item">
             Home
             <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -43,22 +43,113 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted, onBeforeUnmount, watch, provide } from "vue";
 
-let isActive = ref(false);
+// Scroll lock implementation
+function useScrollLock() {
+  const isLocked = ref(false);
+  let scrollPosition = 0;
+  
+  const lockScroll = () => {
+    if (isLocked.value) return;
+    
+    // Store current scroll position
+    scrollPosition = window.scrollY;
+    
+    // Calculate scrollbar width
+    const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
+    
+    // Save current body styles
+    const originalStyle = window.getComputedStyle(document.body);
+    const paddingRight = parseInt(originalStyle.paddingRight, 10) || 0;
+    
+    // Apply scroll lock styles
+    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollPosition}px`;
+    document.body.style.width = '100%';
+    document.body.style.paddingRight = `${paddingRight + scrollBarWidth}px`;
+    
+    isLocked.value = true;
+  };
+  
+  const unlockScroll = () => {
+    if (!isLocked.value) return;
+    
+    // Remove scroll lock styles
+    document.body.style.removeProperty('overflow');
+    document.body.style.removeProperty('position');
+    document.body.style.removeProperty('top');
+    document.body.style.removeProperty('width');
+    document.body.style.removeProperty('padding-right');
+    
+    // Restore scroll position
+    window.scrollTo(0, scrollPosition);
+    
+    isLocked.value = false;
+  };
+  
+  // Clean up on component unmount
+  onBeforeUnmount(() => {
+    if (isLocked.value) {
+      unlockScroll();
+    }
+  });
+  
+  return {
+    isLocked,
+    lockScroll,
+    unlockScroll
+  };
+}
+const { lockScroll, unlockScroll } = useScrollLock();
+
+const isActive = ref(false);
+provide("isActive", isActive);
+
+const emit = defineEmits(["toggle"]);
 
 function toggleNavbar() {
   isActive.value = !isActive.value;
+  emit("toggle");
 }
+
+watch(() => isActive.value, (newValue) => {
+  if (newValue) {
+    lockScroll();
+  } else {
+    unlockScroll();
+  }
+});
+
+function updateViewportHeight() {
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
+
+onMounted(() => {
+  updateViewportHeight();
+  window.addEventListener('resize', updateViewportHeight);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', updateViewportHeight);
+  unlockScroll();
+});
 </script>
 
+
 <style scoped>
+
+:root {
+  --vh: 100%;
+}
+
 .navbar {
   height: 4em;
   display: flex;
   align-items: center;
   padding: 0 1em;
-  background-color: #000;
 }
 
 .navbar-brand {
@@ -75,26 +166,24 @@ function toggleNavbar() {
 .nav-icon {
   cursor: pointer;
   transition: transform 0.3s ease;
-  z-index: 110; /* Ensure this is higher than the menu's z-index */
+  z-index: 110; 
 }
-
-/* Rotate the hamburger icon when menu is active (open) */
-
 
 .full-page-menu {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: calc(var(--vh, 1vh) * 100);
   background-color: #000;
   background-image: url("data:image/svg+xml,%3Csvg%20width%3D%22309%22%20height%3D%22767%22%20viewBox%3D%220%200%20309%20767%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M166.5%20182.014L165.696%20107.215C165.68%20105.712%20164.512%20104.472%20163.013%20104.366C160.074%20104.157%20160.074%2099.8425%20163.013%2099.6342C164.512%2099.5278%20165.68%2098.2884%20165.696%2096.7849L166.5%2021.9856L167.304%2096.7849C167.32%2098.2884%20168.488%2099.5278%20169.987%2099.6342C172.926%2099.8425%20172.926%20104.157%20169.987%20104.366C168.488%20104.472%20167.32%20105.712%20167.304%20107.215L166.5%20182.014Z%22%20fill%3D%22%230F0F0F%22%20stroke%3D%22%230F0F0F%22%20stroke-width%3D%220.515789%22%2F%3E%3Cpath%20d%3D%22M112.765%20738.757L112.048%20651.968C112.034%20650.304%20110.762%20648.922%20109.106%20648.769C105.744%20648.459%20105.744%20643.549%20109.106%20643.239C110.762%20643.086%20112.034%20641.704%20112.048%20640.04L112.765%20553.251L113.482%20640.04C113.496%20641.704%20114.767%20643.086%20116.424%20643.239C119.786%20643.549%20119.786%20648.459%20116.424%20648.769C114.767%20648.922%20113.496%20650.304%20113.482%20651.968L112.765%20738.757Z%22%20fill%3D%22%230F0F0F%22%20stroke%3D%22%230F0F0F%22%20stroke-width%3D%220.463158%22%2F%3E%3Cpath%20d%3D%22M305.084%20210.451C320.097%20349.521%20264.794%20543.47%20181.671%20643.687C98.5473%20743.904%2018.9297%20712.619%203.91648%20573.549C-11.0967%20434.479%2044.2059%20240.53%20127.329%20140.313C210.453%2040.0964%20290.07%2071.3809%20305.084%20210.451Z%22%20stroke%3D%22%230F0F0F%22%20stroke-width%3D%222%22%2F%3E%3C%2Fsvg%3E");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   display: flex;
-  justify-content: center; /* Horizontally center content */
-  align-items: center; /* Vertically center content */
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
 }
 
 .menu-content {
@@ -102,7 +191,7 @@ function toggleNavbar() {
   flex-direction: column;
   gap: 10rem;
   text-align: center;
-  padding: 2rem; /* Add some padding for better spacing */
+  padding: 2rem; 
 }
 
 .menu-item {
@@ -115,11 +204,11 @@ function toggleNavbar() {
   gap: 1rem;
 }
 
-/* Add transitions for a smooth fade-in effect */
 .fade-enter-active, .fade-leave-active {
   transition: opacity 0.5s;
 }
-.fade-enter, .fade-leave-to {
+.fade-enter, 
+.fade-leave-to {
   opacity: 0;
 }
 </style>
