@@ -62,7 +62,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, inject } from "vue";
+import { computed, ref } from "vue";
 import Navbar from "../Navbar.vue";
 
 const emailAddress = import.meta.env.VITE_EMAIL;
