@@ -52,9 +52,6 @@ console.log(deviceInfo.resolution);  // Outputs: Screen resolution, e.g. '1920x1
     <div class="item">
       <ContactPage />
     </div>
-    <div class="item">
-      <GalleryPage />
-    </div>
   </vue-scroll-snap>
 </template>
 
