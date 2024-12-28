@@ -265,7 +265,7 @@ END:VCALENDAR`;
 }
 
 .event-date {
-  background-color: #5939FB;
+  background-color: #495829;
   padding: 5px;
   border-radius: 7px;
   text-align: center;
@@ -316,7 +316,7 @@ END:VCALENDAR`;
 }
 
 .event-time-container, .event-location-container {
-  background-color: #5939FB;
+  background-color: #495829;
   border-radius: 11px;
   padding: 5px 10px;
   margin-right: 10px;
