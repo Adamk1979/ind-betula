@@ -97,7 +97,7 @@ if (typeof window !== 'undefined' && !document.querySelector('script[src="https:
 }
 
 const spotifyIframeSrc = computed(() => {
-  return "https://open.spotify.com/embed/track/1CsMKhwEmNnmvHUuO5nryA?utm_source=generator";
+  return "https://open.spotify.com/embed/artist/15CgEIwgR1f8d8xbgjyh66?utm_source=generator";
 });
 
 // Append the Spotify iframe dynamically when the component mounts
@@ -106,7 +106,7 @@ onMounted(() => {
   if (embedIframe) {
     const iframe = document.createElement('iframe');
     iframe.style.borderRadius = '12px';
-    iframe.src="https://open.spotify.com/embed/track/1CsMKhwEmNnmvHUuO5nryA?utm_source=generator" ;
+    iframe.src="https://open.spotify.com/embed/artist/15CgEIwgR1f8d8xbgjyh66?utm_source=generator" ;
     iframe.width = '100%';
     iframe.height = '120%';
     iframe.frameBorder = '0';
