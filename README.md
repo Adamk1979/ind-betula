@@ -1,8 +1,3 @@
-Certainly! Here's a comprehensive `README.md` for your [ind-betula](https://github.com/Adamk1979/ind-betula) project, formatted within a single `bash` code block for easy copying into your GitHub repository:
-
----
-
-
 # Betula Band Website
 
 A modern, responsive website for the band **Betula**, built with Vue.js and Vite.  
